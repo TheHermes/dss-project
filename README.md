@@ -24,8 +24,8 @@ Users.csv har 14 miljoner användare/rader så vi kan bårt en hel del. Vi minsk
 Efter att vi trimmat/slagit ihop filerna har vi dom här filerna i data katalogen:
 
 - games_merged.csv
-- users_trimmed.csv
-- recommendations_trimmed.csv
+- users_real.csv
+- recommendations_real.csv
 
 ## EDA
 
@@ -37,7 +37,7 @@ Vi analyserar och  utforskar vår data.
 
 - 50872 unika spel
 - 15 kolumner, t.ex. app_id, title, date_release mm.
-- description kolumnen är den ända av alla data som har inga värde, vi ser till att beakta detta
+- description kolumnen är den ända av alla data som har inga värde, vi ser till att beakta detta, antingen droppar vi dom eller fyller med något som passar. Spel med ingen description antaglien är inte så värst påbjudande till många
 
 ![alt text](/images/{20944469-4343-4D16-8FDD-91EF9501DD5F}.png)
 
@@ -78,3 +78,17 @@ Jag blev inspirerad och tog många av [detta projekts exempel](https://www.kaggl
 #### Distribution av spel betyg
 
 ![Distribution av spel betyg](/images/{4DFDDD0D-8E83-417C-A84D-610B1499B55F}.png)
+
+#### Hur många reviews finns det per spel?
+
+
+
+## Innehålls baserad rekommendationssystem
+
+## Rekommendationssystem med Samarbetsbaserad filtrering
+
+## Hybrid-Rekommendationssystem
+
+## Evaluering och verifikation
+
+## Analys och tankar
