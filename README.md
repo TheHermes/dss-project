@@ -13,7 +13,13 @@ Vi har 4 olika data filer:
 
 Vi borde kombinera games.csv med games_metadata.json för att lättare kunna ta tags och description. Sedan borde vi kombinera users.csv med recommendations.csv och lite trimma på fil storleken. Recommendations.csv är nästan 2 gb stor eller 41 miljoner rader och kan säkert skapa en väldigt bra rekommendationssystem men vi måste beakta att vi jobbar med inte så bra hårdvara och vi vill komma fram till resultat snabbare.
 
-Users.csv har 1.4 miljoner användare/rader så vi kan bårt en hel del. Vi minskar mägnden till 100 000.
+Users.csv har 14 miljoner användare/rader så vi kan bårt en hel del. Vi minskar mägnden till 1 000 och skapar bins för storlekar på 100.
+
+#### Bins: 
+
+(hur många reviews per användare, den tar t.ex. 100 users med reviews mellan 26-35, så här får vi en diverse user base med olika mängder reviews, utan att behöva använda 2gb fil)
+
+(5, 15), (16, 25), (26, 35), (36, 45), (46, 55), (56, 65), (66, 75), (76, 85), (86, 95), (96, 120)
 
 Efter att vi trimmat/slagit ihop filerna har vi dom här filerna i data katalogen:
 
@@ -37,18 +43,18 @@ Vi analyserar och  utforskar vår data.
 
 ### Users.csv (users_trimmed.csv)
 
-**OBS!!!** Vi minska vår storlek på hur många users vi har, endast 100 000
+**OBS!!!** Vi minska vår storlek på hur många users vi har, endast 1 000
 
-- 1.4 miljoner användare i ursprungliga datan, 100 000 efter att vi trimmat
+- 1.4 miljoner användare i ursprungliga datan, 1 000 efter att vi trimmat
 - 3 kolumner: user_id, products (hur många produkter man äger) och reviews (hur många recensioner man gjort)
 
 ![alt text](/images/{777AF8EE-22EC-493D-8A9C-1D4C9165E894}.png)
 
 ### Recommendations.csv (recommendations_trimmed.csv)
 
-**OBS!!!** Vi trimmade ner vår data ner så att vi har ca 300 000 rekommendationer som finns för dom 100 000 användarna i users_trimmed.csv
+**OBS!!!** Vi trimmade ner vår data ner så att vi har 40 000 rekommendationer som finns för dom 1 000 användarna i users_trimmed.csv
 
-- 289 642 rekommendationer/rader
+- 40 000 rekommendationer/rader
 - 9 kolumner, app_id
 
 ![alt text](/images/{8DA4F1BB-21A0-44A5-ADEB-EC861A99FBC8}.png)

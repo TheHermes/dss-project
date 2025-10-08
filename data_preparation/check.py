@@ -1,8 +1,10 @@
 import pandas as pd
 
+# Validate if the recommendations has only reviews from the trimmed users file, otherwise the file is useless
+
 # Load the trimmed datasets
-users_trimmed = pd.read_csv("data/users_trimmed.csv")
-recs_trimmed = pd.read_csv("data/recommendations_trimmed.csv")
+users_trimmed = pd.read_csv("data/recommendations_stratified.csv")
+recs_trimmed = pd.read_csv("data/users_stratified_sample.csv")
 
 # Extract user_id column name (replace with your actual name)
 user_col = "user_id"
@@ -12,7 +14,7 @@ valid_users = set(users_trimmed[user_col])
 invalid = recs_trimmed.loc[~recs_trimmed[user_col].isin(valid_users)]
 
 if invalid.empty:
-    print("✅ All recommendations have valid user_ids present in users_trimmed.csv")
+    print("All recommendations have valid user_ids present in users_trimmed.csv")
 else:
-    print(f"⚠️ Found {len(invalid)} invalid rows (user_ids not in users_trimmed.csv)")
+    print(f"Found {len(invalid)} invalid rows (user_ids not in users_trimmed.csv)")
     print(invalid.head())
