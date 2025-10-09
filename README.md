@@ -108,7 +108,7 @@ Systemet dock är bristfälligt vi rekommenderar spel på basis av hur nära der
 Det finns ingen egentlig rating kolumn men vi har timmar som spelats och om användaren rekommenderar spelet. Vi kan kombinera dom två och räkna ut en rating på basis av:
 
 $$
-\text{score} = 0.7 \times \text{is\_recommended} + 0.3 \times \text{hours\_played}
+\text{score} = 0.7 \times \text{is-recommended} + 0.3 \times \text{hours\_played}
 $$
 
 Varav score är ett tal mellan 0-1 desto större värde desto bättre rating. Vi sätter stor vikt på om användaren rekommenderar spelet och lite mindre på hur många timmar en har spelat. Här kan man säkert hitta ett bättre sätt att göra det här.
