@@ -117,6 +117,10 @@ Varav score är ett tal mellan 0-1 desto större värde desto bättre rating. Vi
 df["rating"] = (0.7 * df["is_recommended"]) + (0.3 * df["hours_normalized"])
 ```
 
+Vårt system nu baserar rekommendationer på basis av vad användaren har tyckt om. Vi får då diverse spel och möjligen oförväntade spel som inte alls liknar vad en användare typiskt tycker om.
+
+Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte finns data att jämföra med. Vi har också ett problem med populäritets partiskhet, eftersom populära spel förekommer oftare i datan.
+
 ### Exempel Körning
 
 #### 1 000 användar datan
