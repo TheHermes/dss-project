@@ -95,6 +95,10 @@ Vi uttnyttjar, spelets tittel och tags som finns i data. Vi håller båda, efter
 
 ### Exempel körning
 
+<details>
+
+<summary>Visa</summary>
+
 ![Exempel 1](/images/{E4F68CBD-9F55-4AF1-96B2-7C2DA4ADE716}.png)
 
 Dying Light 2 Stay Human har inga tags så systemet rekommenderar dlc för spelet, vilket är typiskt för steam att också gör.
@@ -102,6 +106,8 @@ Dying Light 2 Stay Human har inga tags så systemet rekommenderar dlc för spele
 ![Exempel 2](/images/{4A053EE6-5F6D-4DC3-A56E-70C7FB75153A}.png)
 
 Systemet dock är bristfälligt vi rekommenderar spel på basis av hur nära deras tittel + tags är varandra. Detta kan leda lätt till att vi rekommenderar endast spel som är i samma franchise eller dlc när man kanske vill se spel istället. Det blir klart och tydligt varför ett spel rekommenderas, eftersom om du tycker om Call of Duty så rekommenderar den liknande spel eller andra COD spel. Vi kan också redan börja rekommendera spel, ingen coldstart men de här systemet tar inte i beaktande användar partiskhet och åsikter, det kommer till näst.
+
+</details>
 
 ## Rekommendationssystem med Samarbetsbaserad filtrering
 
@@ -123,6 +129,10 @@ Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte 
 
 ### Exempel Körning
 
+<details>
+
+<summary>Visa</summary>
+
 #### 1 000 användar datan
 
 ![Exempel 1](/images/{60C83F4C-0378-40AF-AF4E-992175D6F2B0}.png)
@@ -130,6 +140,8 @@ Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte 
 #### 10 000 användar datan
 
 ![Exempel 2](/images/{4B2DDA3B-2774-4F33-B479-748A588B5ECA}.png)
+
+</details>
 
 ## Hybrid-Rekommendationssystem
 
