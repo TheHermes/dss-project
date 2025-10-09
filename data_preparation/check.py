@@ -3,8 +3,8 @@ import pandas as pd
 # Validate if the recommendations has only reviews from the trimmed users file, otherwise the file is useless
 
 # Load the trimmed datasets
-users_trimmed = pd.read_csv("data/recommendations_stratified.csv")
-recs_trimmed = pd.read_csv("data/users_stratified_sample.csv")
+users_trimmed = pd.read_csv("data/recommendations_real.csv")
+recs_trimmed = pd.read_csv("data/users_1000.csv")
 
 # Extract user_id column name (replace with your actual name)
 user_col = "user_id"

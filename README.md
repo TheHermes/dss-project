@@ -1,5 +1,7 @@
 # Egentliga Slut projekt med steam
 
+[Kan hjälpa](https://www.kaggle.com/code/thakursankalp/steam-game-recommendation-engine)
+
 [Data länk](https://www.kaggle.com/datasets/antonkozyriev/game-recommendations-on-steam/data)
 
 ## Data
@@ -27,6 +29,8 @@ Efter att vi trimmat/slagit ihop filerna har vi dom här filerna i data kataloge
 - users_real.csv
 - recommendations_real.csv
 
+Jag bestämmer mig för att testa med två olika storleks data, en med 1 000 användare och en med 10 000 användare.
+
 ## EDA
 
 Vi analyserar och  utforskar vår data.
@@ -52,9 +56,9 @@ Vi analyserar och  utforskar vår data.
 
 ### Recommendations.csv (recommendations_trimmed.csv)
 
-**OBS!!!** Vi trimmade ner vår data ner så att vi har 40 000 rekommendationer som finns för dom 1 000 användarna i users_trimmed.csv
+**OBS!!!** Vi trimmade ner vår data ner så att vi har 50 000 rekommendationer som finns för dom 1 000 användarna i users_trimmed.csv
 
-- 40 000 rekommendationer/rader
+- 50 000 rekommendationer/rader / 500 000 för 10 000 användare
 - 9 kolumner, app_id
 
 ![alt text](/images/{8DA4F1BB-21A0-44A5-ADEB-EC861A99FBC8}.png)
@@ -85,7 +89,43 @@ Jag blev inspirerad och tog många av [detta projekts exempel](https://www.kaggl
 
 ## Innehålls baserad rekommendationssystem
 
+Vi har implementerat ett innehållsbaserat system.
+
+Vi uttnyttjar, spelets tittel och tags som finns i data. Vi håller båda, eftersom ett antal spel har inte tags så då kan vi rekommendera spel i samma franchise.
+
+### Exempel körning
+
+![Exempel 1](/images/{E4F68CBD-9F55-4AF1-96B2-7C2DA4ADE716}.png)
+
+Dying Light 2 Stay Human har inga tags så systemet rekommenderar dlc för spelet, vilket är typiskt för steam att också gör.
+
+![Exempel 2](/images/{4A053EE6-5F6D-4DC3-A56E-70C7FB75153A}.png)
+
+Systemet dock är bristfälligt vi rekommenderar spel på basis av hur nära deras tittel + tags är varandra. Detta kan leda lätt till att vi rekommenderar endast spel som är i samma franchise eller dlc när man kanske vill se spel istället. Det blir klart och tydligt varför ett spel rekommenderas, eftersom om du tycker om Call of Duty så rekommenderar den liknande spel eller andra COD spel. Vi kan också redan börja rekommendera spel, ingen coldstart men de här systemet tar inte i beaktande användar partiskhet och åsikter, det kommer till näst.
+
 ## Rekommendationssystem med Samarbetsbaserad filtrering
+
+Det finns ingen egentlig rating kolumn men vi har timmar som spelats och om användaren rekommenderar spelet. Vi kan kombinera dom två och räkna ut en rating på basis av:
+
+$$
+\text{score} = 0.7 \times \text{is\_recommended} + 0.3 \times \text{hours\_played}
+$$
+
+Varav score är ett tal mellan 0-1 desto större värde desto bättre rating. Vi sätter stor vikt på om användaren rekommenderar spelet och lite mindre på hur många timmar en har spelat. Här kan man säkert hitta ett bättre sätt att göra det här.
+
+```Python
+df["rating"] = (0.7 * df["is_recommended"]) + (0.3 * df["hours_normalized"])
+```
+
+### Exempel Körning
+
+#### 1 000 användar datan
+
+![Exempel 1](/images/{60C83F4C-0378-40AF-AF4E-992175D6F2B0}.png)
+
+#### 10 000 användar datan
+
+![Exempel 2](/images/{4B2DDA3B-2774-4F33-B479-748A588B5ECA}.png)
 
 ## Hybrid-Rekommendationssystem
 

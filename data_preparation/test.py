@@ -3,8 +3,8 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 
-rec_df = pd.read_csv("data/recommendations_real.csv")
-user_df = pd.read_csv("data/users_real.csv")
+rec_df = pd.read_csv("data/recommendations_stratified.csv")
+user_df = pd.read_csv("data/users_stratified_sample.csv")
 
 print(len(rec_df))
 print(len(rec_df['user_id'].unique()))

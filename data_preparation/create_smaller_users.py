@@ -9,7 +9,7 @@ users = pd.read_csv("data/users.csv")
 
 # Define bins and desired sample sizes
 bins = [(5, 15), (16, 25), (26, 35), (36, 45), (46, 55), (56, 65), (66, 75), (76, 85), (86, 95), (96, 120)]
-sample_per_bin = 100  # users per bin
+sample_per_bin = 1000  # users per bin
 sampled_frames = []
 
 # Loop through each bin and sample users
