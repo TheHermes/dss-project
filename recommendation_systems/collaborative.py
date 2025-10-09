@@ -64,8 +64,6 @@ class CollaborativeRecommender:
             fill_value=0
         )
 
-        #print(f"Matrix shape: {self.user_item_matrix.shape} (users × games)")
-
         self.user_mapper = {user_id: i for i, user_id in enumerate(self.user_item_matrix.index)}
         self.game_mapper = {app_id: i for i, app_id in enumerate(self.user_item_matrix.columns)}
 
@@ -76,6 +74,7 @@ class CollaborativeRecommender:
             random_state=42,
             max_iter=400
         )
+        
         model.fit_transform(self.user_item_matrix.values)
         self.nmf_model = model
 
@@ -98,46 +97,55 @@ class CollaborativeRecommender:
         user_vector = self.user_item_matrix.iloc[user_idx].values
         user_P = self.nmf_model.transform(user_vector.reshape(1, -1))
         user_Q = self.nmf_model.components_
-        predicted_scores = np.dot(user_P, user_Q).flatten()
 
+        predicted_scores = np.dot(user_P, user_Q).flatten()
         scores = pd.Series(predicted_scores, index=self.user_item_matrix.columns)
 
         # Remove games the user already interacted with
         rated_games = self.user_item_matrix.iloc[user_idx]
         scores = scores[rated_games == 0]
 
-        # Get top games
-        top_app_ids = scores.nlargest(num_recommendations).index
-        rec_titles = self.games_df[self.games_df["app_id"].isin(top_app_ids)]["title"].tolist()
+        """print("SCORES")
+        print(scores.nlargest(10))"""
 
-        return rec_titles
+        # Get top games with highest predicted preference
+        top_scores = scores.nlargest(num_recommendations)
+
+        recommendations = []
+        for app_id, score in top_scores.items():
+            title_row = self.games_df[self.games_df["app_id"] == app_id]
+            if not title_row.empty:
+                title = title_row.iloc[0]['title']
+                recommendations.append((title, float(score)))
+
+        return recommendations
 
     def print_recommendations(self, user_id, n=5):
         recs = self.recommend(user_id, n)
         if recs:
             print(f"\nTop {n} Recommendations for user {user_id}:\n")
-            for i, title in enumerate(recs, start=1):
-                print(f"{i}. {title}")
+            for i, (title, score) in enumerate(recs, start=1):
+                print(f"{i}. {title} (predicted preference: {score:.3f})")
         else:
             print(f"No recommendations found for user {user_id}.")
 
-
 if __name__ == "__main__":
     # Data with 1 000 users and ca 50 000 recommendations
-    """recommender = CollaborativeRecommender(
-        games_path="data/games_merged.csv",
-        recommendations_path="data/recommendations_1000.csv"
-    )"""
-
-    # Data with 10 000 users and ca 500 000 recommendations
     recommender = CollaborativeRecommender(
         games_path="data/games_merged.csv",
-        recommendations_path="data/recommendations_10000.csv"
+        recommendations_path="data/recommendations_1000.csv"
     )
+
+    # Data with 10 000 users and ca 500 000 recommendations
+    """recommender = CollaborativeRecommender(
+        games_path="data/games_merged.csv",
+        recommendations_path="data/recommendations_10000.csv"
+    )"""
 
     recommender.fit()
 
     # Test user (replace with an existing user_id)
     #test_user_id = 6956683 # user for 1000 user data
-    test_user_id = 8075017 # user for 10000 user data
-    recommender.print_recommendations(test_user_id, n=10)
+    test_user_id = 11895026
+    #test_user_id = 8075017 # user for 10000 user data
+    recommender.print_recommendations(test_user_id, n=5)

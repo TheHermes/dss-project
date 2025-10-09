@@ -46,14 +46,6 @@ class ContentBasedRecommender:
 
         # Drop rows with missing tags or titles
         self.games_df = self.games_df.dropna(subset=["tags", "title"])
-        #self.games_df = self.games_df[self.games_df["tags"].str.len() > 2]
-
-        """if "tags" not in self.games_df.columns: 
-            raise ValueError("The dataset must contain a 'tags' column.") 
-
-        # Don't include games that do not have a tags, they don't add anything and the recommendations based on them are not good 
-        self.games_df = self.games_df.dropna(subset=["tags"]) 
-        self.games_df = self.games_df[self.games_df["tags"].str.len() > 2] # filter out """
     
         # Clean and preprocess tags
         self.games_df["tags_processed"] = self.games_df["tags"].apply(self._preprocess_tags)
@@ -66,11 +58,8 @@ class ContentBasedRecommender:
         #self.tfidf_matrix = tfidf.fit_transform(self.games_df["tags_processed"])
         self.tfidf_matrix = tfidf.fit_transform(self.games_df["content"])
 
-
         # Index by game title (drop duplicates just in case)
         self.game_indices = pd.Series(self.games_df.index, index=self.games_df["title"]).drop_duplicates()
-
-        #print(f"Fitted TF-IDF matrix for {len(self.games_df)} games.")
 
     def recommend(self, game_title, num_recommendations=5):
         """
@@ -90,12 +79,14 @@ class ContentBasedRecommender:
 
         # Sort scores and pick top N (skip the game itself)
         similar_indices = cosine_scores.argsort()[::-1][1:num_recommendations + 1]
-        similar_games = self.games_df.iloc[similar_indices]["title"].tolist()
 
-        similar_games = sorted(similar_games, key=lambda x: x[1], reverse=True)
+        recommendations = []
+        for idx in similar_indices:
+            title = self.games_df.iloc[idx]['title']
+            score = float(cosine_scores[idx])
+            recommendations.append((title, score))
 
-        return similar_games
-
+        return recommendations
 
 if __name__ == "__main__":
     recommender = ContentBasedRecommender(game_data_path="data/games_merged.csv")
@@ -104,12 +95,11 @@ if __name__ == "__main__":
     # Example: change the title below to any that exists in your games.csv
     #game_title_to_test = "Dying Light 2 Stay Human"
     #game_title_to_test = "The Evil Within"
-    game_title_to_test = "Hearts of Iron IV"
-
-
+    #game_title_to_test = "Hearts of Iron IV"
+    game_title_to_test = "Assassin's Creed® Origins"
     recommendations = recommender.recommend(game_title_to_test, num_recommendations=5)
     if recommendations:
         print(f"\nRecommendations for '{game_title_to_test}':")
-        for g in recommendations:
-            print(f"- {g}")
+        for title, score in recommendations:
+            print(f"- {title} (similarity: {score:.3f})")
         print("\n")
