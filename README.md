@@ -1,6 +1,6 @@
-# Egentliga Slut projekt med steam
+# Spel Rekommendationssystem
 
-[Kan hjälpa](https://www.kaggle.com/code/thakursankalp/steam-game-recommendation-engine)
+I detta projekt utvecklas ett rekommendationsystem på basis av data från spel platformen Steam.
 
 [Data länk](https://www.kaggle.com/datasets/antonkozyriev/game-recommendations-on-steam/data)
 
