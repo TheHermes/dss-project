@@ -17,7 +17,7 @@ Vi borde kombinera games.csv med games_metadata.json för att lättare kunna ta 
 
 Users.csv har 14 miljoner användare/rader så vi kan bårt en hel del. Vi minskar mägnden till 1 000 och skapar bins för storlekar på 100.
 
-#### Bins: 
+#### Bins:
 
 (hur många reviews per användare, den tar t.ex. 100 users med reviews mellan 26-35, så här får vi en diverse user base med olika mängder reviews, utan att behöva använda 2gb fil)
 
