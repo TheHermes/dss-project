@@ -165,4 +165,6 @@ CB_score(i) = how similar the game is to what they’ve already liked
 
 ## Evaluering och verifikation
 
+Precision@k, coverage och novelty
+
 ## Analys och tankar
