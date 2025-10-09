@@ -145,6 +145,24 @@ Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte 
 
 ## Hybrid-Rekommendationssystem
 
+Gör först med perus content_based + collaborative
+
+Sen kanske det som är här under:
+
+Weighted Hybrid (Score Blending)
+
+Combine the predicted scores from each model using weights:
+
+final_score(u,i)= α × CF_score(u,i) + (1−α) × CB_score(i)
+
+where:
+
+CF_score(u,i) = how much the collaborative model thinks user u will like game i
+
+CB_score(i) = how similar the game is to what they’ve already liked
+
+α controls the balance (e.g. 0.7 CF / 0.3 CB)
+
 ## Evaluering och verifikation
 
 ## Analys och tankar

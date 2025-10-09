@@ -81,7 +81,7 @@ class CollaborativeRecommender:
 
         print("NMF model fitted successfully.")
 
-    def recommend(self, user_id, num_recommendations=10):
+    def recommend(self, user_id, num_recommendations=5):
         """
         Recommend top-N games for a specific user.
         """
@@ -112,7 +112,7 @@ class CollaborativeRecommender:
 
         return rec_titles
 
-    def print_recommendations(self, user_id, n=10):
+    def print_recommendations(self, user_id, n=5):
         recs = self.recommend(user_id, n)
         if recs:
             print(f"\nTop {n} Recommendations for user {user_id}:\n")
