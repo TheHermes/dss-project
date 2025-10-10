@@ -150,12 +150,13 @@ I hybrid.py har vi implementerat ett hybrid rekommendationssystem som kombinerar
 och 
 2. Innehålsbaserad filtrering (CB)
 
-Med att kombinera dessa uppnår vi ett mera balanserat rekommendationssystem.
+Med att kombinera dessa uppnår vi ett mera balanserat rekommendationssystem.<br>
 Systemet går igenom alla spel användaren spelat eller recenserat och gör rekommendationer baserat på det (exkluderar redan ägda/spel som interagerats med).
 
-I systemet kan man lägga olika vikt på CF och CB för bättre resultat. Balansen styrs av α (alfa), α=1 fullt fokus på CF, α=0 fullt fokus på CB. Följer följande formel:
+I systemet kan man lägga olika vikt på CF och CB för bättre resultat. Balansen styrs av α (alfa), α=1 fullt fokus på CF, α=0 fullt fokus på CB. Följer följande formel:<br>
+
 $$
-\text{final-score}(u,i) = \alpha \cdot CF-score(u,i) + (1-\alpha) \cdot CB-score(i)
+\text{final\_score}(u,i) = \alpha \cdot CF\_score(u,i) + (1-\alpha) \cdot CB\_score(i)
 $$
 
 Resultaten av CF och CB normaliseras före kombinationer för att få jämförbara skalor:
@@ -173,6 +174,7 @@ collab_scores = self.normalize_scores(collab_scores)
 content_scores = self.normalize_scores(content_scores)
 ```
 ### Resultat
+Resultat med α = 0.8<br>
 ![hybrid_recommendation_example](/images/image.png)
 
 ## Evaluering och verifikation
