@@ -145,23 +145,35 @@ Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte 
 
 ## Hybrid-Rekommendationssystem
 
-Gör först med perus content_based + collaborative
+I hybrid.py har vi implementerat ett hybrid rekommendationssystem som kombinerar våra två tidigare rekommendationssystem/strategier:
+1. Kollaborativ/Samarbetsbaserad filtrering (CF)
+och 
+2. Innehålsbaserad filtrering (CB)
 
-Sen kanske det som är här under:
+Med att kombinera dessa uppnår vi ett mera balanserat rekommendationssystem.
+Systemet går igenom alla spel användaren spelat eller recenserat och gör rekommendationer baserat på det (exkluderar redan ägda/spel som interagerats med).
 
-Weighted Hybrid (Score Blending)
+I systemet kan man lägga olika vikt på CF och CB för bättre resultat. Balansen styrs av α (alfa), α=1 fullt fokus på CF, α=0 fullt fokus på CB. Följer följande formel:
+$$
+\text{final\_score}(u,i) = \alpha \cdot CF\_score(u,i) + (1-\alpha) \cdot CB\_score(i)
+$$
 
-Combine the predicted scores from each model using weights:
-
-final_score(u,i)= α × CF_score(u,i) + (1−α) × CB_score(i)
-
-where:
-
-CF_score(u,i) = how much the collaborative model thinks user u will like game i
-
-CB_score(i) = how similar the game is to what they’ve already liked
-
-α controls the balance (e.g. 0.7 CF / 0.3 CB)
+Resultaten av CF och CB normaliseras före kombinationer för att få jämförbara skalor:
+```python
+def normalize_scores(self, scores_dict):
+        if not scores_dict:
+            return scores_dict
+        max_score = max(scores_dict.values())
+        if max_score == 0:
+            return {k: 0 for k in scores_dict}
+        return {k: v / max_score for k, v in scores_dict.items()}
+```
+```python
+collab_scores = self.normalize_scores(collab_scores)
+content_scores = self.normalize_scores(content_scores)
+```
+### Resultat
+![hybrid_recommendation_example](image.png)
 
 ## Evaluering och verifikation
 
