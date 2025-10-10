@@ -155,7 +155,7 @@ Systemet går igenom alla spel användaren spelat eller recenserat och gör reko
 
 I systemet kan man lägga olika vikt på CF och CB för bättre resultat. Balansen styrs av α (alfa), α=1 fullt fokus på CF, α=0 fullt fokus på CB. Följer följande formel:
 $$
-\text{final\_score}(u,i) = \alpha \cdot CF\_score(u,i) + (1-\alpha) \cdot CB\_score(i)
+\text{final-score}(u,i) = \alpha \cdot CF-score(u,i) + (1-\alpha) \cdot CB-score(i)
 $$
 
 Resultaten av CF och CB normaliseras före kombinationer för att få jämförbara skalor:
@@ -173,7 +173,7 @@ collab_scores = self.normalize_scores(collab_scores)
 content_scores = self.normalize_scores(content_scores)
 ```
 ### Resultat
-![hybrid_recommendation_example](image.png)
+![hybrid_recommendation_example](/images/image.png)
 
 ## Evaluering och verifikation
 
