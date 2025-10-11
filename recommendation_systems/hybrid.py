@@ -95,7 +95,7 @@ class HybridRecommender:
                 for title, score in content_recs:
                     if title not in user_games_titles:  
                         content_scores[title] = content_scores.get(title, 0) + score
-            except ValueError:
+            except (ValueError, IndexError): 
                 continue
 
         # Normalize scores
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     hybrid_recommender = HybridRecommender(game_data_path="data/games_merged.csv", user_game_data_path="data/users_1000.csv", recommendations_path="data/recommendations_1000.csv", alpha=0.8)
     hybrid_recommender.fit()
     #game_seed = 
-    #user_id = 11895026  # Example user ID
-    user_id = 657825
+    user_id = 11895026  # Example user ID
+    #user_id = 657825
     recommendations = hybrid_recommender.recommend(user_id, top_n=10)
     hybrid_recommender.print_recommendations(recommendations)
