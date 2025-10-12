@@ -19,6 +19,7 @@ class HybridRecommender:
         self.collaborative_recommender = CollaborativeRecommender(game_data_path, recommendations_path) # path needed
         self.alpha = alpha
         self.games_df = pd.read_csv(game_data_path)
+        self.recs_df = pd.read_csv(recommendations_path)
     
     def fit(self):
         """
@@ -126,5 +127,5 @@ if __name__ == "__main__":
     #game_seed = 
     user_id = 11895026  # Example user ID
     #user_id = 657825
-    recommendations = hybrid_recommender.recommend(user_id, top_n=10)
+    recommendations = hybrid_recommender.recommend(user_id, top_n=5)
     hybrid_recommender.print_recommendations(recommendations)
