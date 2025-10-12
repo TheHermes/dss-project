@@ -170,13 +170,14 @@ Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte 
 I hybrid.py har vi implementerat ett hybrid rekommendationssystem som kombinerar våra två tidigare rekommendationssystem/strategier:
 
 1. Kollaborativ/Samarbetsbaserad filtrering (CF)
-och 
+
 2. Innehålsbaserad filtrering (CB)
 
 Med att kombinera dessa uppnår vi ett mera balanserat rekommendationssystem.
 
 
-Systemet går igenom alla spel användaren spelat eller recenserat och gör rekommendationer baserat på det (exkluderar redan ägda/spel som interagerats med).
+Systemet går igenom alla spel användaren spelat eller recenserat och gör rekommendationer baserat på det (exkluderar redan ägda/spel som interagerats med) (_tidigare version se kommentar om ändring nedan_).
+
 
 I systemet kan man lägga olika vikt på CF och CB för bättre resultat. Balansen styrs av α (alfa), α=1 fullt fokus på CF, α=0 fullt fokus på CB. Följer följande formel:
 
@@ -201,17 +202,32 @@ collab_scores = self.normalize_scores(collab_scores)
 content_scores = self.normalize_scores(content_scores)
 ```
 
+Gjorde mot slutet ändring i Hybrid rekommendationssystemet så att den rekommenderar på basis av ett gillat spel för användaren istället för alla gillade spel.
+
+Den kör då snabbare och speciellt evaluering blir effektivare.
+
+Resultaten blir det samma men är snabbare.
+
 ### Resultat
 
 Resultat med α = 0.8
 
 ![hybrid_recommendation_example](/images/image.png)
 
+Vi tar en annan körning där vi jämför med det kollaborativa systemet.
+
+![Comparison](/images/comparison.png)
+
+Intressant nog så föreslår den samma spel som kollaborativa men i annan ordning. Inte överraskande att den ger samma spel då det är mera vikt på kollaborativa med alfa = 0.8. Däremot om vi ändrar alfa till 0.5 istället så får vi också andra spel i resultat då den satsar lika mycket på innehållsbaserade systemet.
+
+![Comparison 2](images/comparison.png)
+
+
 ## Evaluering och verifikation
 
 I evaluering har vi funktioner för att räkna Precision@k, coverage och novelty för hybrid rekommendationssystemet. 
 
-Att notera för dessa mått är att precision kommer alltid bli 0 eftersom vi exkluderar spel från rekommendationerna som användaren intereagerat med (spelat eller rekommenderat). Coverage är lågt för att det finns en så stor katalog av spel i jämförelse till mängd spel som rekommenderas. Novelty blir också högt för samma orsak. Det finns mera opopulära spel än populära spel i katalogen.
+Att notera för dessa mått är att precision kommer alltid bli 0 eftersom vi exkluderar spel från rekommendationerna som användaren intereagerat med (spelat eller rekommenderat). Coverage är lågt för att det finns en så stor katalog av spel i jämförelse till mängd spel som rekommenderas. Novelty blir också högt på grund av katalogstorleken. Det kan finnas mera opopulära spel än populära spel i katalogen.
 
 Just nu kör evaluator.py väldigt väldigt långsamt. Detta för att den kör igenom rekommendationer för så många användare.
 
@@ -221,10 +237,23 @@ Ett sätt att förbättra hastighet kunde vara att försöka köra igenom använ
 
 ### Resultat
 
-Resultat för 1000 användare.
+Resultat för 1000 användare, där mängden spel som rekommenderas per användare är 5. (Kör väldigt långsamt)
 
 ![Evaluator results](/images/evaluator.png)
 
-(ide för att bli snabbare, köra med singe title hybrid recommender)
+
+
+Resultat då man rekommenderar baserat på ett gillat spel (också 5 rekommendationer per användare). (Kör snabbt)
+Vi får lägre coverage eftersom vi inte utgår från alla spel användare gillat.
+
+![Evaluering](/images/evaluator_singlegame.png)
+
+10 rekommendationer per användare:
+
+![10 rekommendationer per användare](/images/10recommendationsperuser_evaluation.png)
+
 
 ## Analys och tankar
+Vidareutveckling evaluering: recall
+
+vidareutveckling på hybrid: kunde den gjorts bättre?

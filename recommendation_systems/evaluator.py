@@ -29,12 +29,12 @@ class RecommenderEvaluator:
         )
         self.games_df = self.recommender.games_df
         self.recs_df = self.recommender.recs_df
-        self.popularity_scores = None
+        #self.popularity_scores = None
         self.title_to_appid = pd.Series(
             self.games_df['app_id'].values, 
             index=self.games_df['title'].str.lower()
         ).to_dict()
-        self.popularity = self.recs_df['app_id'].value_counts(normalize=True).to_dict()
+        #self.popularity = self.recs_df['app_id'].value_counts(normalize=True).to_dict()
     def precision_at_k(self, all_recs, k=10):
         '''
         This version gave score 1
@@ -61,52 +61,25 @@ class RecommenderEvaluator:
         for user_id, rec_titles in all_recs.items():
         
             user_data = self.recs_df[self.recs_df["user_id"] == user_id]
-            liked_titles = set(self.games_df[self.games_df["app_id"].isin(user_data[user_data["is_recommended"] == True]["app_id"])]["title"].dropna().str.lower().tolist())
+            liked_titles = set(self.games_df[self.games_df["app_id"].isin(user_data[user_data["is_recommended"] == True]["app_id"])]["title"].dropna().tolist())
                 # Map titles to app_id
             if not liked_titles:
                 precision_scores.append(0.0)
                     #continue
                 
-
-            rec_set = set([r.lower() for r in rec_titles[:k]])
+            rec_set = set(rec_titles[:k])
             hits = len(rec_set & liked_titles)
-        #return hits / k
             precision_scores.append(hits / k)
-            #hits = len(rec_items & true_items)
-            #precision = hits / k
-            #precision_scores.append(precision)
-     
             
         return np.mean(precision_scores)
-        # Get top-k recommendations from hybrid
-        #recs = self.recommender.recommend(user_id, top_n=k)
-        
-        # Map titles to app_id if needed
-        #rec_items = {self.title_to_appid.get(r[0] if isinstance(r, tuple) else r)for r in recs if self.title_to_appid.get(r[0] if isinstance(r, tuple) else r) is not None}
-        #rec_titles = {r[0].lower() if isinstance(r, tuple) else r.lower() for r in recs}
-
-        #if not rec_titles:
-         #   return 0.0
-    
-        #hits = len(rec_titles & liked_titles)
-        
-        #return hits / k # Dont return mean here, can be done outside for all users
-        
     
     def calculate_coverage(self, all_recommendations):
         recommended_games = set()
         for recs in all_recommendations.values(): # loop over users instead?
-            # AI FIX for iterable error
-        # Ensure recs is iterable (a list of titles) 
-          #  if isinstance(recs, (str, int, np.int64)):
-               # recs = [recs]  # wrap single item into a list
-            #elif isinstance(recs, list):
-                # If it's a list of tuples (title, score), extract titles
             if recs and isinstance(recs[0], tuple):
                  recs = [r[0] for r in recs]
             recommended_games.update(recs)
 
-        #num_recommended = len(recommended_games)
         total_games = self.games_df['title'].nunique() # or should recs_df appid be used?
         coverage = len(recommended_games) / total_games if total_games > 0 else 0
         return coverage
@@ -168,13 +141,10 @@ class RecommenderEvaluator:
         '''
         return all_recommendations
    
-    
-# Evaluator is quite slow
 if __name__ == "__main__":
     # Load data
     recs_df = pd.read_csv("data/recommendations_1000.csv")
     all_items = set(recs_df['app_id'].unique())
- #
     '''
     # Initialize recommender
     hybrid_recommender = HybridRecommender(
@@ -197,29 +167,16 @@ if __name__ == "__main__":
     evaluator.fit_recommender()
 
     # Example user IDs to evaluate
-    user_ids = recs_df['user_id'].unique()[:1000]  # Evaluate on first 100 users (takes a long time (possible fixes))
+    user_ids = recs_df['user_id'].unique()[:1000]  
     #user_ids = [11895026]
     #user_ids = [9843409]
-    #precision_scores = []
+
     all_recommendations = evaluator.generate_all_recommendations(user_ids, top_n=5) 
 
     precision = evaluator.precision_at_k(all_recommendations, k=10)
     coverage = evaluator.calculate_coverage(all_recommendations)
     novelty = evaluator.calculate_novelty(all_recommendations)
 # Do concurrent.futures?
-# Running recommendation here and in precision k (might be redundant)
-    '''
-    for user_id in user_ids:
-        recs = hybrid_recommender.recommend(user_id, top_n=10)
-        rec_titles = [title for title, score in recs]
-        all_recommendations[user_id] = rec_titles
-        precision = evaluator.precision_at_k(user_id, k=10)
-        precision_scores.append(precision)
-    
-    mean_precision = np.mean(precision_scores)
-    coverage = evaluator.cacluclate_coverage(all_recommendations)
-    novelty = evaluator.novelty(all_recommendations)
-    '''
     
     print(f"Mean Precision@10: {precision:.4f}")
     print(f"Coverage: {coverage:.4f}")

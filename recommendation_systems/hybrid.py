@@ -78,7 +78,7 @@ class HybridRecommender:
         user_games = self.collaborative_recommender.recs_df[self.collaborative_recommender.recs_df['user_id'] == user_id]['app_id'].unique()
         # Get titles for those app_ids 
         #user_games_titles = self.collaborative_recommender.games_df[self.collaborative_recommender.games_df['app_id'].isin(user_games)]['title'].unique()
-        user_games_titles = set(self.collaborative_recommender.games_df.loc[self.collaborative_recommender.games_df['app_id'].isin(user_games), 'title'].str.lower())
+        user_games_titles = set(self.collaborative_recommender.games_df.loc[self.collaborative_recommender.games_df['app_id'].isin(user_games), 'title'])
         content_scores = {}
         # Get content based recommendations based on every game the user has played
         ''' 
@@ -91,6 +91,7 @@ class HybridRecommender:
             except (ValueError, IndexError): 
                 continue
     ''' 
+        # Using one game is faster and simpler but gives less diverse recommendations 
         if seed_game_title and seed_game_title in user_games_titles:
             seed_game = seed_game_title
         elif user_games_titles:
@@ -132,7 +133,9 @@ if __name__ == "__main__":
     hybrid_recommender = HybridRecommender(game_data_path="data/games_merged.csv", user_game_data_path="data/users_1000.csv", recommendations_path="data/recommendations_1000.csv", alpha=0.8)
     hybrid_recommender.fit()
     game_seed = "Half-Life"
-    user_id = 11895026  # Example user ID
+    #game_seed = "The Evil Within"
+    #user_id = 11895026  # Example user ID
     #user_id = 657825
-    recommendations = hybrid_recommender.recommend(user_id, top_n=5, seed_game_title=game_seed)
+    user_id = 6956683
+    recommendations = hybrid_recommender.recommend(user_id, top_n=10, seed_game_title=game_seed)
     hybrid_recommender.print_recommendations(recommendations)
