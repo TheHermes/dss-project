@@ -179,6 +179,17 @@ Resultat med α = 0.8<br>
 
 ## Evaluering och verifikation
 
-Precision@k, coverage och novelty
+I evaluering har vi funktioner för att räkna Precision@k, coverage och novelty för hybrid rekommendationssystemet. 
+
+Att notera för dessa mått är att precision kommer alltid bli 0 eftersom vi exkluderar spel från rekommendationerna som användaren intereagerat med (spelat eller rekommenderat). Coverage är lågt för att det finns en så stor katalog av spel i jämförelse till mängd spel som rekommenderas. Novelty blir också högt för samma orsak. Det finns mera opopulära spel än populära spel i katalogen.
+
+Just nu kör evaluator.py väldigt väldigt långsamt. Detta för att den kör igenom rekommendationer för så många användare.
+
+För att optimera borde man hitta på sätt att köra igenom rekommendationsystemet snabbare. 
+
+Ett sätt att förbättra hastighet kunde vara att försöka köra igenom användare parallelt.
+
+### Resultat
+![Evaluator results](image-1.png)
 
 ## Analys och tankar
