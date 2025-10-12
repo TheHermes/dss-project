@@ -1,8 +1,8 @@
 import pandas as pd
 
-users_df = pd.read_csv('data/users_trimmed.csv')
+users_df = pd.read_csv('data/users_1000.csv')
 games_df = pd.read_csv('data/games_merged.csv')
-recommendations_df = pd.read_csv("data/recommendations_trimmed.csv")
+recommendations_df = pd.read_csv("data/recommendations_1000.csv")
 
 print(users_df.head())
 print(games_df.head())

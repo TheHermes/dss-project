@@ -1,3 +1,0 @@
-#
-#   Evaluate the collaborative system
-#

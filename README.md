@@ -13,7 +13,7 @@ Vi har 4 olika data filer:
 - users.csv, information om steam användare
 - recommendations.csv, rekommandtioner från användare på steam
 
-Vi borde kombinera games.csv med games_metadata.json för att lättare kunna ta tags och description. Sedan borde vi kombinera users.csv med recommendations.csv och lite trimma på fil storleken. Recommendations.csv är nästan 2 gb stor eller 41 miljoner rader och kan säkert skapa en väldigt bra rekommendationssystem men vi måste beakta att vi jobbar med inte så bra hårdvara och vi vill komma fram till resultat snabbare.
+Vi borde kombinera games.csv med games_metadata.json för att lättare kunna ta tags och description. Vi behöver inte kombinera users.csv med recommendations.csv eftersom i det andra datan så finns det färdigt user_id och allt vi behöver men vi borde lite trimma på fil storleken. Recommendations.csv är nästan 2 gb stor eller 41 miljoner rader och kan säkert skapa en väldigt bra rekommendationssystem men vi måste beakta att vi jobbar med inte så bra hårdvara och vi vill komma fram till resultat snabbare.
 
 Users.csv har 14 miljoner användare/rader så vi kan bårt en hel del. Vi minskar mägnden till 1 000 och skapar bins för storlekar på 100.
 
@@ -26,14 +26,12 @@ Users.csv har 14 miljoner användare/rader så vi kan bårt en hel del. Vi minsk
 Efter att vi trimmat/slagit ihop filerna har vi dom här filerna i data katalogen:
 
 - games_merged.csv
-- users_real.csv
-- recommendations_real.csv
-
-Jag bestämmer mig för att testa med två olika storleks data, en med 1 000 användare och en med 10 000 användare.
+- users_1000.csv
+- recommendations_1000.csv ca. 50 000 rader
 
 ## EDA
 
-Vi analyserar och  utforskar vår data.
+Vi utforskar vår data.
 
 ### Games.csv (games_merged.csv)
 
@@ -43,7 +41,23 @@ Vi analyserar och  utforskar vår data.
 - 15 kolumner, t.ex. app_id, title, date_release mm.
 - description kolumnen är den ända av alla data som har inga värde, vi ser till att beakta detta, antingen droppar vi dom eller fyller med något som passar. Spel med ingen description antaglien är inte så värst påbjudande till många
 
-![alt text](/images/{20944469-4343-4D16-8FDD-91EF9501DD5F}.png)
+<details>
+
+<summary>Visa Bild</summary>
+
+![Bild på tomma rader](/images/{B8B71397-2D5D-4B20-948C-1B36B1854228}.png)
+
+</details>
+
+### Tomma tags
+
+Fastän i bilden och när vi med kod utforskar finns det tomma tags också. Den är inte 'tom' men den har tomt innehåll.
+
+![Bild på tomma tags](/images/{8F2EA3A9-5FEF-42B2-B52B-5D1077C4543C}.png)
+
+### Bild kolumner
+
+![Bild kolumner](/images/{20944469-4343-4D16-8FDD-91EF9501DD5F}.png)
 
 ### Users.csv (users_trimmed.csv)
 
@@ -58,40 +72,42 @@ Vi analyserar och  utforskar vår data.
 
 **OBS!!!** Vi trimmade ner vår data ner så att vi har 50 000 rekommendationer som finns för dom 1 000 användarna i users_trimmed.csv
 
-- 50 000 rekommendationer/rader / 500 000 för 10 000 användare
+- 50 000 rekommendationer/rader
 - 9 kolumner, app_id
 
 ![alt text](/images/{8DA4F1BB-21A0-44A5-ADEB-EC861A99FBC8}.png)
 
 ### Visualiseringar
 
-Det ända datasättet som kan utforskas bra visuellt är games.csv, users.csv har endast data i sig inget, intressant att visualisera. Samma med recommendations, data om rekommendationerna.
-
-Jag blev inspirerad och tog många av [detta projekts exempel](https://www.kaggle.com/code/sohaibahmedbsds2021/game-recommendation-system) visualiserings exempel.
+Det ända datasättet som kan utforskas bra visuellt är games.csv, users.csv har endast data i sig inget, intressant att visualisera.
 
 #### Antal spel utsläppta peer år
 
-![Antal spel utsläppta peer år](/images/{CE8A3979-EBD9-4D27-9F4D-FE2C08DA9492}.png)
+![Antal spel utsläppta peer år](/images/{BB019396-001B-47FC-BF4C-F42792F40584}.png)
 
 #### Spel per platform
 
-![Spel per platform](/images/{C618106C-C738-4CE5-B2A0-E6494EF6E859}.png)
-
-![Spel per platform utan steamdeck](/images/{A651FF16-79DD-4C71-9947-9FD6414DF30C}.png)
+![Spel per platform](/images/{07244AB0-3AF2-417A-97A6-0EE0C746FF04}.png)
 
 #### Distribution av spel betyg
 
-![Distribution av spel betyg](/images/{4DFDDD0D-8E83-417C-A84D-610B1499B55F}.png)
+![Distribution av spel betyg](/images/{91FF714C-DB90-43AE-AE12-6239243A4EED}.png)
 
-#### Hur många reviews finns det per spel?
+#### Hur många reviews finns det per spel
 
+![Distribution på recensioner](/images/{C2FB9F6A-1AFF-41B5-B9FE-6EA0D5E22EFF}.png)
 
+Det kommer antagligen att orsaka ett pupläritets bubble eller partiskhet i detta rekommendationssystem, eftersom mera populära spel har mera recenscioner.
 
 ## Innehålls baserad rekommendationssystem
 
-Vi har implementerat ett innehållsbaserat system.
+Vi använder tfidf för att gemföra olika spelens egenskaper.
 
 Vi uttnyttjar, spelets tittel och tags som finns i data. Vi håller båda, eftersom ett antal spel har inte tags så då kan vi rekommendera spel i samma franchise.
+
+När man vill ha rekommendationer från ett spel så rekommenderar systemet på basis av hur nära titteln är med sitt namn och tags i gemförelse med andra rekommendera liknande spel.
+
+Vi kan lätt får snabba resultat med det finns inget mera till systemet. Data är också lite bristfällig, många spel har inte tags, då måste vi rekommendera på basis av tittel, vilket kommer att rekommendera spel i samma franchise eller DLC.
 
 ### Exempel körning
 
@@ -105,11 +121,15 @@ Dying Light 2 Stay Human har inga tags så systemet rekommenderar dlc för spele
 
 ![Exempel 2](/images/{4A053EE6-5F6D-4DC3-A56E-70C7FB75153A}.png)
 
-Systemet dock är bristfälligt vi rekommenderar spel på basis av hur nära deras tittel + tags är varandra. Detta kan leda lätt till att vi rekommenderar endast spel som är i samma franchise eller dlc när man kanske vill se spel istället. Det blir klart och tydligt varför ett spel rekommenderas, eftersom om du tycker om Call of Duty så rekommenderar den liknande spel eller andra COD spel. Vi kan också redan börja rekommendera spel, ingen coldstart men de här systemet tar inte i beaktande användar partiskhet och åsikter, det kommer till näst.
-
 </details>
 
+Systemet dock är bristfälligt vi rekommenderar spel på basis av hur nära deras tittel + tags är varandra. Detta kan leda lätt till att vi rekommenderar endast spel som är i samma franchise eller dlc när man kanske vill se spel istället.
+
+Det blir klart och tydligt varför ett spel rekommenderas, eftersom om du tycker om Call of Duty så rekommenderar den liknande spel eller andra COD spel. Vi kan också redan börja rekommendera spel, ingen coldstart men de här systemet tar inte i beaktande användar partiskhet och åsikter, det kommer till näst.
+
 ## Rekommendationssystem med Samarbetsbaserad filtrering
+
+Vi skapar ett NMF matris på basis av user_id, app_id och rating.
 
 Det finns ingen egentlig rating kolumn men vi har timmar som spelats och om användaren rekommenderar spelet. Vi kan kombinera dom två och räkna ut en rating på basis av:
 
@@ -146,6 +166,7 @@ Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte 
 ## Hybrid-Rekommendationssystem
 
 I hybrid.py har vi implementerat ett hybrid rekommendationssystem som kombinerar våra två tidigare rekommendationssystem/strategier:
+
 1. Kollaborativ/Samarbetsbaserad filtrering (CF)
 och 
 2. Innehålsbaserad filtrering (CB)
@@ -162,7 +183,8 @@ $$
 $$
 
 Resultaten av CF och CB normaliseras före kombinationer för att få jämförbara skalor:
-```python
+
+```Python
 def normalize_scores(self, scores_dict):
         if not scores_dict:
             return scores_dict
@@ -171,12 +193,16 @@ def normalize_scores(self, scores_dict):
             return {k: 0 for k in scores_dict}
         return {k: v / max_score for k, v in scores_dict.items()}
 ```
-```python
+
+```Python
 collab_scores = self.normalize_scores(collab_scores)
 content_scores = self.normalize_scores(content_scores)
 ```
+
 ### Resultat
+
 Resultat med α = 0.8
+
 ![hybrid_recommendation_example](/images/image.png)
 
 ## Evaluering och verifikation
@@ -192,10 +218,11 @@ För att optimera borde man hitta på sätt att köra igenom rekommendationsyste
 Ett sätt att förbättra hastighet kunde vara att försöka köra igenom användare parallelt.
 
 ### Resultat
+
 Resultat för 1000 användare.
 
 ![Evaluator results](/images/evaluator.png)
 
-
 (ide för att bli snabbare, köra med singe title hybrid recommender)
+
 ## Analys och tankar
