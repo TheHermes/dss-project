@@ -129,7 +129,7 @@ Det blir klart och tydligt varför ett spel rekommenderas, eftersom om du tycker
 
 ## Rekommendationssystem med Samarbetsbaserad filtrering
 
-Vi skapar ett NMF matris på basis av user_id, app_id och rating.
+Vi skapar ett NMF matris på basis av user_id, app_id och rating för att hitta gömda mönster i användarnas beteende.
 
 Det finns ingen egentlig rating kolumn men vi har timmar som spelats och om användaren rekommenderar spelet. Vi kan kombinera dom två och räkna ut en rating på basis av:
 
@@ -143,7 +143,7 @@ Varav score är ett tal mellan 0-1 desto större värde desto bättre rating. Vi
 df["rating"] = (0.7 * df["is_recommended"]) + (0.3 * df["hours_normalized"])
 ```
 
-Vårt system nu baserar rekommendationer på basis av vad användaren har tyckt om. Vi får då diverse spel och möjligen oförväntade spel som inte alls liknar vad en användare typiskt tycker om.
+Vårt system nu baserar rekommendationer på basis av vad användaren har tyckt om. Vi får då diverse spel och möjligen oförväntade spel som inte alls liknar vad en användare typiskt tycker om. I gemförelse med innehållsbaserat får vi mera diverse tittlar.
 
 Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte finns data att jämföra med. Vi har också ett problem med populäritets partiskhet, eftersom populära spel förekommer oftare i datan.
 
@@ -156,6 +156,8 @@ Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte 
 #### 1 000 användar datan
 
 ![Exempel 1](/images/{60C83F4C-0378-40AF-AF4E-992175D6F2B0}.png)
+
+#### Maybe remove
 
 #### 10 000 användar datan
 
