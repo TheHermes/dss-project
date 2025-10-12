@@ -20,7 +20,7 @@ class HybridRecommender:
         self.alpha = alpha
         self.games_df = pd.read_csv(game_data_path)
         self.recs_df = pd.read_csv(recommendations_path)
-    
+
     def fit(self):
         """
         Fits both the content-based and collaborative recommenders.
@@ -28,7 +28,6 @@ class HybridRecommender:
         """
         self.content_recommender.fit()
         self.collaborative_recommender.fit()
-
     def normalize_scores(self, scores_dict):
         """
         Normalizes the scores in a dictionary to a range of 0 to 1.
@@ -59,7 +58,7 @@ class HybridRecommender:
         print("\n")
     
     
-    def recommend(self, user_id, top_n):
+    def recommend(self, user_id, top_n, seed_game_title=None):
         """
         Recommends games for a given user by combining scores from both recommenders.
         
@@ -78,19 +77,12 @@ class HybridRecommender:
         # Get content-based recommendations for each game the user has interacted with
         user_games = self.collaborative_recommender.recs_df[self.collaborative_recommender.recs_df['user_id'] == user_id]['app_id'].unique()
         # Get titles for those app_ids 
-        user_games_titles = self.collaborative_recommender.games_df[self.collaborative_recommender.games_df['app_id'].isin(user_games)]['title'].unique()
-        '''content_titles = []
-        for game in user_games_titles:
-            try:
-                content_recs = self.content_recommender.recommend(game, num_recommendations=top_n)
-                for title, score in content_recs:
-                    if title not in user_games and title not in content_titles:  # Avoid recommending games the user already has
-                        content_titles.append(title)
-            except ValueError:
-                continue  # Skip games not found in the content-based recommender'''
+        #user_games_titles = self.collaborative_recommender.games_df[self.collaborative_recommender.games_df['app_id'].isin(user_games)]['title'].unique()
+        user_games_titles = set(self.collaborative_recommender.games_df.loc[self.collaborative_recommender.games_df['app_id'].isin(user_games), 'title'].str.lower())
         content_scores = {}
         # Get content based recommendations based on every game the user has played
-        for game in user_games_titles:
+        ''' 
+       for game in user_games_titles:
             try: 
                 content_recs = self.content_recommender.recommend(game, num_recommendations=top_n)
                 for title, score in content_recs:
@@ -98,6 +90,24 @@ class HybridRecommender:
                         content_scores[title] = content_scores.get(title, 0) + score
             except (ValueError, IndexError): 
                 continue
+    ''' 
+        if seed_game_title and seed_game_title in user_games_titles:
+            seed_game = seed_game_title
+        elif user_games_titles:
+            seed_game = next(iter(user_games_titles))
+        else:
+            seed_game=None
+
+        
+        if seed_game:
+            try:
+                recs = self.content_recommender.recommend(seed_game, num_recommendations = top_n)
+                for title, score in recs:
+                    if title not in user_games_titles:
+                        content_scores[title] = score
+            except Exception:
+                pass
+        
 
         # Normalize scores
         collab_scores = self.normalize_scores(collab_scores)
@@ -105,7 +115,9 @@ class HybridRecommender:
 
         # Combine scores using weighted sum
         combined_scores = {}
-        for title in set(collab_scores.keys()).union(content_scores.keys()):
+        all_titles = set(collab_scores.keys()).union(content_scores.keys())
+        for title in all_titles:
+        #for title in set(collab_scores.keys()).union(content_scores.keys()):
             cf = collab_scores.get(title, 0)
             cb = content_scores.get(title, 0)
             combined = self.alpha * cf + (1 - self.alpha) * cb
@@ -115,17 +127,12 @@ class HybridRecommender:
         ranked = sorted(combined_scores.items(), key=lambda x: x[1], reverse=True)[:top_n]
         return ranked
                 
-        #all_titles = list(dict.fromkeys(content_titles + collab_titles)) # Preserve order and remove duplicates
-        # Sort by combined score and return top N recommendations
-        #recommended_titles = sorted(combined_scores.items(), key=lambda x: x[1], reverse=True)[:top_n]
-        #return recommended_titles
-        #return all_titles[:top_n]
     
 if __name__ == "__main__":
     hybrid_recommender = HybridRecommender(game_data_path="data/games_merged.csv", user_game_data_path="data/users_1000.csv", recommendations_path="data/recommendations_1000.csv", alpha=0.8)
     hybrid_recommender.fit()
-    #game_seed = 
+    game_seed = "Half-Life"
     user_id = 11895026  # Example user ID
     #user_id = 657825
-    recommendations = hybrid_recommender.recommend(user_id, top_n=5)
+    recommendations = hybrid_recommender.recommend(user_id, top_n=5, seed_game_title=game_seed)
     hybrid_recommender.print_recommendations(recommendations)

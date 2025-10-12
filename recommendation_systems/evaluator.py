@@ -59,19 +59,24 @@ class RecommenderEvaluator:
         #Alternative with app_id^^^^
         precision_scores = []
         for user_id, rec_titles in all_recs.items():
+        
             user_data = self.recs_df[self.recs_df["user_id"] == user_id]
             liked_titles = set(self.games_df[self.games_df["app_id"].isin(user_data[user_data["is_recommended"] == True]["app_id"])]["title"].dropna().str.lower().tolist())
-            # Map titles to app_id
+                # Map titles to app_id
             if not liked_titles:
                 precision_scores.append(0.0)
-                continue
+                    #continue
+                
 
             rec_set = set([r.lower() for r in rec_titles[:k]])
             hits = len(rec_set & liked_titles)
+        #return hits / k
             precision_scores.append(hits / k)
             #hits = len(rec_items & true_items)
             #precision = hits / k
             #precision_scores.append(precision)
+     
+            
         return np.mean(precision_scores)
         # Get top-k recommendations from hybrid
         #recs = self.recommender.recommend(user_id, top_n=k)
@@ -112,17 +117,11 @@ class RecommenderEvaluator:
         popularity_counts = self.recs_df['app_id'].value_counts(normalize=True)
         for recs in all_recommendations.values():
             for title in recs:
-                app_id = self.games_df.loc[
-                self.games_df['title'] == title, 'app_id'
-            ].squeeze()
-
-            if pd.isna(app_id) or app_id not in popularity_counts:
-                continue
-
+               
             # Map title to app_id
-                #app_row = self.games_df[self.games_df['title'] == title]
-                #if not app_row.empty:
-                    #app_id = app_row.iloc[0]['app_id']
+                app_row = self.games_df[self.games_df['title'] == title]
+                if not app_row.empty:
+                    app_id = app_row.iloc[0]['app_id']
             pop = popularity_counts.get(app_id, 0)
             if pop > 0:
                 novelty.append(-np.log2(pop))
@@ -149,11 +148,24 @@ class RecommenderEvaluator:
 
     def generate_all_recommendations(self, user_ids, top_n=10):
         all_recommendations = {}
+        
         for user_id in user_ids:
             recs = self.recommender.recommend(user_id, top_n=top_n)
             rec_titles = [r[0] if isinstance(r, tuple) else r for r in recs]
             all_recommendations[user_id] = rec_titles
+        
+        '''
+        def get_user_recs(user_id):
+            recs = self.recommender.recommend(user_id, top_n=top_n)
+            rec_titles = [r[0] if isinstance(r, tuple) else r for r in recs]
+            return user_id, rec_titles
 
+        with ThreadPoolExecutor(4) as executor:
+            futures = [executor.submit(get_user_recs, uid) for uid in user_ids]
+            for future in as_completed(futures):
+                user_id, rec_titles = future.result()
+                all_recommendations[user_id] = rec_titles
+        '''
         return all_recommendations
    
     

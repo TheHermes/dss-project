@@ -192,6 +192,10 @@ För att optimera borde man hitta på sätt att köra igenom rekommendationsyste
 Ett sätt att förbättra hastighet kunde vara att försöka köra igenom användare parallelt.
 
 ### Resultat
+Resultat för 1000 användare.
+
 ![Evaluator results](/images/evaluator.png)
 
+
+(ide för att bli snabbare, köra med singe title hybrid recommender)
 ## Analys och tankar
