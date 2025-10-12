@@ -190,6 +190,6 @@ För att optimera borde man hitta på sätt att köra igenom rekommendationsyste
 Ett sätt att förbättra hastighet kunde vara att försöka köra igenom användare parallelt.
 
 ### Resultat
-![Evaluator results](image-1.png)
+![Evaluator results](/images/evaluator.png)
 
 ## Analys och tankar
