@@ -175,9 +175,7 @@ I hybrid.py har vi implementerat ett hybrid rekommendationssystem som kombinerar
 
 Med att kombinera dessa uppnår vi ett mera balanserat rekommendationssystem.
 
-
 Systemet går igenom alla spel användaren spelat eller recenserat och gör rekommendationer baserat på det (exkluderar redan ägda/spel som interagerats med) (_tidigare version se kommentar om ändring nedan_).
-
 
 I systemet kan man lägga olika vikt på CF och CB för bättre resultat. Balansen styrs av α (alfa), α=1 fullt fokus på CF, α=0 fullt fokus på CB. Följer följande formel:
 
@@ -222,10 +220,9 @@ Intressant nog så föreslår den samma spel som kollaborativa men i annan ordni
 
 ![Comparison 2](images/comparison.png)
 
-
 ## Evaluering och verifikation
 
-I evaluering har vi funktioner för att räkna Precision@k, coverage och novelty för hybrid rekommendationssystemet. 
+I evaluering har vi funktioner för att räkna Precision@k, coverage och novelty för hybrid rekommendationssystemet.
 
 Att notera för dessa mått är att precision kommer alltid bli 0 eftersom vi exkluderar spel från rekommendationerna som användaren intereagerat med (spelat eller rekommenderat). Coverage är lågt för att det finns en så stor katalog av spel i jämförelse till mängd spel som rekommenderas. Novelty blir också högt på grund av katalogstorleken. Det kan finnas mera opopulära spel än populära spel i katalogen.
 
@@ -235,13 +232,11 @@ För att optimera borde man hitta på sätt att köra igenom rekommendationsyste
 
 Ett sätt att förbättra hastighet kunde vara att försöka köra igenom användare parallelt.
 
-### Resultat
+### Evaluerings Resultat
 
 Resultat för 1000 användare, där mängden spel som rekommenderas per användare är 5. (Kör väldigt långsamt)
 
 ![Evaluator results](/images/evaluator.png)
-
-
 
 Resultat då man rekommenderar baserat på ett gillat spel (också 5 rekommendationer per användare). (Kör snabbt)
 Vi får lägre coverage eftersom vi inte utgår från alla spel användare gillat.
@@ -252,8 +247,25 @@ Vi får lägre coverage eftersom vi inte utgår från alla spel användare gilla
 
 ![10 rekommendationer per användare](/images/10recommendationsperuser_evaluation.png)
 
-
 ## Analys och tankar
+
+Vi har från grunden utvecklat detta system med mål att lära oss om dessa system, inte skapa det bästa och mest invecklade systemet som finns.
+
+Datan vi har är bristfällig på flera sätt:
+
+- Beskrivningar/Description samt tags saknas från många spel i datan
+- Många användare med inga recensioner eller mindre än 5
+- Datan innehåller inte bara spel utan också DLC/Downloadable content som inte är spel
+- Populäritets bias/partiskhet, för många spel rekommenderas för mycket, det skapas en bubbla
+- För stor data för oss att jobba med, vilket ledde till att vi minska på datan, egentligen inte en dålig sak men för detta projekt måste vi trimma på det om vi ville kunna jobba med det
+
+Ett sätt och göra allting bättre skulle vara att förbättra datan. Vi skulle också kunna, om möjligt, lägga till en önskelista och använda den för att rekommendera, men beakta populära spel.
+
+Innehållsbaserade systemet är ganska långt så bra som den kan vara, vi skulle kunna ta med beskrivning/description, men det verkar börja bli för mycket att gemföra och texterna är inte alltid av samma kvalitet eller beskriver inte på samma sätt sina spel, samt att det fanns många tomma beskrivningar. Vissa spel hade inga tags så datan borde egentligen förbättras för detta ändamålet. Vi kan testa med att använda andra metoder i stället för TfIdf, t.ex. andra NLP metoder, word frequency etc. eller djupinlärning.
+
+Sammarbetsbaserade systemet skulle kunna förbättras genom att kombinera flera samarbetsbaserade rekommendationssytem för att skapa ett bättre system eller använda ett helt annat system. Möjilgen också anpassa systemet så att den minskar på rekommendationer av populära spel.
+
 Vidareutveckling evaluering: recall
 
 vidareutveckling på hybrid: kunde den gjorts bättre?
+
