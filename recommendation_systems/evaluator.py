@@ -13,14 +13,6 @@ class RecommenderEvaluator:
             recs_df: The dataset with user–item interactions
             all_items: Set of all unique item IDs in the catalog
         """
-        '''
-        self.recommender = recommender
-        self.recs_df = recs_df
-        self.games_df = pd.read_csv("data/games_merged.csv")
-        self.all_items = all_items # is this needed? not used in coverage now
-        self.title_to_appid = dict(zip(self.recommender.games_df['title'],self.recommender.games_df['app_id'])) # one idea to make code run faster, there are others as well
-        # ^ mapping titles to app_ids for faster lookup in precision (ground truth vs recommended)
-        '''
         self.recommender = HybridRecommender(
             game_data_path=game_data_path,
             user_game_data_path=user_game_data_path,
@@ -30,10 +22,7 @@ class RecommenderEvaluator:
         self.games_df = self.recommender.games_df
         self.recs_df = self.recommender.recs_df
         #self.popularity_scores = None
-        self.title_to_appid = pd.Series(
-            self.games_df['app_id'].values, 
-            index=self.games_df['title'].str.lower()
-        ).to_dict()
+        #self.title_to_appid = pd.Series(self.games_df['app_id'].values, index=self.games_df['title'].str.lower()).to_dict()
         #self.popularity = self.recs_df['app_id'].value_counts(normalize=True).to_dict()
     def precision_at_k(self, all_recs, k=10):
         '''
@@ -53,8 +42,7 @@ class RecommenderEvaluator:
             if not rec_items:
                 continue
         '''
-         # Ground truth (items the user actually interacted with)
-        #true_items = set(self.recs_df[self.recs_df['user_id'] == user_id]['app_id'])
+         # Ground truth (items the user actually interacted with)        
         #true_items = set(self.recs_df[(self.recs_df['user_id'] == user_id) &(self.recs_df['is_recommended'] == True)]['app_id']) 
         #Alternative with app_id^^^^
         precision_scores = []
@@ -127,18 +115,6 @@ class RecommenderEvaluator:
             rec_titles = [r[0] if isinstance(r, tuple) else r for r in recs]
             all_recommendations[user_id] = rec_titles
         
-        '''
-        def get_user_recs(user_id):
-            recs = self.recommender.recommend(user_id, top_n=top_n)
-            rec_titles = [r[0] if isinstance(r, tuple) else r for r in recs]
-            return user_id, rec_titles
-
-        with ThreadPoolExecutor(4) as executor:
-            futures = [executor.submit(get_user_recs, uid) for uid in user_ids]
-            for future in as_completed(futures):
-                user_id, rec_titles = future.result()
-                all_recommendations[user_id] = rec_titles
-        '''
         return all_recommendations
    
 if __name__ == "__main__":

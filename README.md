@@ -218,7 +218,7 @@ Vi tar en annan körning där vi jämför med det kollaborativa systemet.
 
 Intressant nog så föreslår den samma spel som kollaborativa men i annan ordning. Inte överraskande att den ger samma spel då det är mera vikt på kollaborativa med alfa = 0.8. Däremot om vi ändrar alfa till 0.5 istället så får vi också andra spel i resultat då den satsar lika mycket på innehållsbaserade systemet.
 
-![Comparison 2](images/comparison.png)
+![Comparison 2](images/comparison2.png)
 
 ## Evaluering och verifikation
 
@@ -231,6 +231,8 @@ Just nu kör evaluator.py väldigt väldigt långsamt. Detta för att den kör i
 För att optimera borde man hitta på sätt att köra igenom rekommendationsystemet snabbare. 
 
 Ett sätt att förbättra hastighet kunde vara att försöka köra igenom användare parallelt.
+
+Slutliga lösningen var att rekommendationer är på basis av ett gillat spel istället för användarens alla gillade spel.
 
 ### Evaluerings Resultat
 
@@ -265,7 +267,8 @@ Innehållsbaserade systemet är ganska långt så bra som den kan vara, vi skull
 
 Sammarbetsbaserade systemet skulle kunna förbättras genom att kombinera flera samarbetsbaserade rekommendationssytem för att skapa ett bättre system eller använda ett helt annat system. Möjilgen också anpassa systemet så att den minskar på rekommendationer av populära spel.
 
-Vidareutveckling evaluering: recall
+Hybrid systemet är funktionellt och logiken är rätt. Förbättring kunde säkert göras i den ändå för att uppnå bättre resultat och effektivitet. Som nämnt ovan skulle det dels vara att utveckla på de två tidigare systemen. Men optimering av koden och ändringar som att t.ex. preparation av dataframes och bredare utgångspunkt än ett gillat spel kunde förbättra systemet. 
 
-vidareutveckling på hybrid: kunde den gjorts bättre?
+För evalueringen så är det metriker vi mäter inte det bästa passande för vår data och rekommendationssystem. Precision blir alltid 0, coverage ganska lågt för att det är så stort dataset och novelty blir alltid ganska högt (kring 9). För att evaluerings programmet vore mera givande kunde man överväga att ha med andra metriker eller tänka om hur vi räknar/mäter dem vi har.
+
 

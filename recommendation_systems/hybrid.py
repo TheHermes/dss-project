@@ -95,7 +95,8 @@ class HybridRecommender:
         if seed_game_title and seed_game_title in user_games_titles:
             seed_game = seed_game_title
         elif user_games_titles:
-            seed_game = next(iter(user_games_titles))
+            #seed_game = next(iter(user_games_titles))
+            seed_game = sorted(user_games_titles)[0]
         else:
             seed_game=None
 
@@ -108,7 +109,6 @@ class HybridRecommender:
                         content_scores[title] = score
             except Exception:
                 pass
-        
 
         # Normalize scores
         collab_scores = self.normalize_scores(collab_scores)
@@ -125,15 +125,17 @@ class HybridRecommender:
             combined_scores[title] = combined
 
         # Sort by combined score and return top N recommendations
-        ranked = sorted(combined_scores.items(), key=lambda x: x[1], reverse=True)[:top_n]
+       # ranked = sorted(combined_scores.items(), key=lambda x: x[1], reverse=True)[:top_n]
+        ranked = sorted(combined_scores.items(), key=lambda x: (-x[1], x[0]))[:top_n]
         return ranked
                 
     
 if __name__ == "__main__":
-    hybrid_recommender = HybridRecommender(game_data_path="data/games_merged.csv", user_game_data_path="data/users_1000.csv", recommendations_path="data/recommendations_1000.csv", alpha=0.8)
+    hybrid_recommender = HybridRecommender(game_data_path="data/games_merged.csv", user_game_data_path="data/users_1000.csv", recommendations_path="data/recommendations_1000.csv", alpha=0.7)
     hybrid_recommender.fit()
     game_seed = "Half-Life"
     #game_seed = "The Evil Within"
+    #game_seed = None
     #user_id = 11895026  # Example user ID
     #user_id = 657825
     user_id = 6956683
