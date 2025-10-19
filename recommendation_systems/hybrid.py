@@ -16,7 +16,7 @@ class HybridRecommender:
         alpha = 0 means only collaborative filtering, alpha = 1 means only content-based filtering.
         """
         self.content_recommender = ContentBasedRecommender(game_data_path)
-        self.collaborative_recommender = CollaborativeRecommender(game_data_path, recommendations_path) # path needed
+        self.collaborative_recommender = CollaborativeRecommender(game_data_path, recommendations_path)
         self.alpha = alpha
         self.games_df = pd.read_csv(game_data_path)
         self.recs_df = pd.read_csv(recommendations_path)
@@ -77,7 +77,6 @@ class HybridRecommender:
         # Get content-based recommendations for each game the user has interacted with
         user_games = self.collaborative_recommender.recs_df[self.collaborative_recommender.recs_df['user_id'] == user_id]['app_id'].unique()
         # Get titles for those app_ids 
-        #user_games_titles = self.collaborative_recommender.games_df[self.collaborative_recommender.games_df['app_id'].isin(user_games)]['title'].unique()
         user_games_titles = set(self.collaborative_recommender.games_df.loc[self.collaborative_recommender.games_df['app_id'].isin(user_games), 'title'])
         content_scores = {}
         # Get content based recommendations based on every game the user has played
@@ -118,7 +117,6 @@ class HybridRecommender:
         combined_scores = {}
         all_titles = set(collab_scores.keys()).union(content_scores.keys())
         for title in all_titles:
-        #for title in set(collab_scores.keys()).union(content_scores.keys()):
             cf = collab_scores.get(title, 0)
             cb = content_scores.get(title, 0)
             combined = self.alpha * cf + (1 - self.alpha) * cb

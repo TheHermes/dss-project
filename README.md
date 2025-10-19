@@ -177,7 +177,7 @@ I hybrid.py har vi implementerat ett hybrid rekommendationssystem som kombinerar
 
 Med att kombinera dessa uppnår vi ett mera balanserat rekommendationssystem.
 
-Systemet går igenom alla spel användaren spelat eller recenserat och gör rekommendationer baserat på det (exkluderar redan ägda/spel som interagerats med) (_tidigare version se kommentar om ändring nedan_).
+Systemet går igenom alla spel användaren spelat eller recenserat och gör rekommendationer baserat på det (exkluderar redan ägda/spel som interagerats med) (_tidigare version, se kommentar om ändring nedan_).
 
 I systemet kan man lägga olika vikt på CF och CB för bättre resultat. Balansen styrs av α (alfa), α=1 fullt fokus på CF, α=0 fullt fokus på CB. Följer följande formel:
 
@@ -212,11 +212,11 @@ Resultaten blir det samma men är snabbare.
 
 Resultat med α = 0.8
 
-![hybrid_recommendation_example](/images/image.png)
+![hybrid_recommendation_example](images/image.png)
 
 Vi tar en annan körning där vi jämför med det kollaborativa systemet.
 
-![Comparison](/images/comparison.png)
+![Comparison](images/comparison.png)
 
 Intressant nog så föreslår den samma spel som kollaborativa men i annan ordning. Inte överraskande att den ger samma spel då det är mera vikt på kollaborativa med alfa = 0.8. Däremot om vi ändrar alfa till 0.5 istället så får vi också andra spel i resultat då den satsar lika mycket på innehållsbaserade systemet.
 
@@ -240,16 +240,16 @@ Slutliga lösningen var att rekommendationer är på basis av ett gillat spel is
 
 Resultat för 1000 användare, där mängden spel som rekommenderas per användare är 5. (Kör väldigt långsamt)
 
-![Evaluator results](/images/evaluator.png)
+![Evaluator results](images/evaluator.png)
 
 Resultat då man rekommenderar baserat på ett gillat spel (också 5 rekommendationer per användare). (Kör snabbt)
 Vi får lägre coverage eftersom vi inte utgår från alla spel användare gillat.
 
-![Evaluering](/images/evaluator_singlegame.png)
+![Evaluering](images/evaluator_singlegame.png)
 
 10 rekommendationer per användare:
 
-![10 rekommendationer per användare](/images/10recommendationsperuser_evaluation.png)
+![10 rekommendationer per användare](images/10recommendationsperuser_evaluation.png)
 
 ## Analys och tankar
 

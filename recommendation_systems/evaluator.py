@@ -25,23 +25,6 @@ class RecommenderEvaluator:
         #self.title_to_appid = pd.Series(self.games_df['app_id'].values, index=self.games_df['title'].str.lower()).to_dict()
         #self.popularity = self.recs_df['app_id'].value_counts(normalize=True).to_dict()
     def precision_at_k(self, all_recs, k=10):
-        '''
-        This version gave score 1
-        precision_scores = []
-        for user_id, recommendations in all_recommendations.items():
-            if not recommendations:
-                continue
-            hits = sum(1 for item in recommendations if item not in self.recs_df.get(user_id, set()))
-            precision = hits / k
-            precision_scores.append(precision)
-        return precision_scores
-        #mean_precision = np.mean(precision_scores)
-        #return mean_precision   
-        rec_items = {self.title_to_appid.get(r) for r in rec_titles if self.title_to_appid.get(r) is not None}
-            true_items = set(self.recs_df[(self.recs_df['user_id'] == user_id) &(self.recs_df['is_recommended'] == True)]['app_id']) 
-            if not rec_items:
-                continue
-        '''
          # Ground truth (items the user actually interacted with)        
         #true_items = set(self.recs_df[(self.recs_df['user_id'] == user_id) &(self.recs_df['is_recommended'] == True)]['app_id']) 
         #Alternative with app_id^^^^
@@ -95,17 +78,6 @@ class RecommenderEvaluator:
         print("Fitting hybrid recommender...")
         self.recommender.fit()
         print("Recommender fitted.")
-        '''
-        # Popularity: fraction of users who interacted with each game
-        game_counts = self.recs_df['app_id'].value_counts()
-        num_users = self.recs_df['user_id'].nunique()
-        self.popularity_scores = game_counts / num_users
-
-        # Map titles to app_id
-        games_unique = self.games_df.drop_duplicates(subset='title')
-        self.title_to_id = pd.Series(games_unique.app_id.values, index=games_unique.title)
-        print("Precomputed popularity scores and title-to-appid mapping.")
-        '''
 
     def generate_all_recommendations(self, user_ids, top_n=10):
         all_recommendations = {}
@@ -121,18 +93,7 @@ if __name__ == "__main__":
     # Load data
     recs_df = pd.read_csv("data/recommendations_1000.csv")
     all_items = set(recs_df['app_id'].unique())
-    '''
-    # Initialize recommender
-    hybrid_recommender = HybridRecommender(
-        game_data_path="data/games_merged.csv",
-        user_game_data_path="data/users_1000.csv",
-        recommendations_path="data/recommendations_1000.csv",
-        alpha=0.8 # alpha influences results of evaluation
-    )
-    '''
-   # hybrid_recommender.fit()
-
-    #evaluator = RecommenderEvaluator(hybrid_recommender, recs_df, all_items)
+  
     evaluator = RecommenderEvaluator(
         game_data_path="data/games_merged.csv",
         user_game_data_path="data/users_1000.csv",
