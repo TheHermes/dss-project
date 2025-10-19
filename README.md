@@ -165,12 +165,6 @@ Nya användare dock kommer inte att kunna dra nytta av detta, eftersom det inte 
 
 ![Exempel 1](/images/{60C83F4C-0378-40AF-AF4E-992175D6F2B0}.png)
 
-#### Maybe remove
-
-#### 10 000 användar datan
-
-![Exempel 2](/images/{4B2DDA3B-2774-4F33-B479-748A588B5ECA}.png)
-
 </details>
 
 ## Hybrid-Rekommendationssystem
