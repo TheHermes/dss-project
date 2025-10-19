@@ -12,7 +12,6 @@ recommendations = pd.read_csv("data/recommendations_1000.csv")
 games["date_release"] = pd.to_datetime(games["date_release"])
 recommendations["date"] = pd.to_datetime(recommendations["date"])
 
-
 plt.figure(figsize=(15, 6))
 games["date_release"].dt.year.value_counts().sort_index().plot(kind="line", marker="o")
 plt.title("Antal spel släppta per år")
