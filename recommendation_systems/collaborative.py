@@ -39,7 +39,7 @@ class CollaborativeRecommender:
         # Normalize hours to a 0–1 range
         df["hours_normalized"] = df["hours"] / (df["hours"].max() + 1e-6)
 
-        # Weighted rating: more hours + positive rec
+        # Weighted rating: hours + positive rec
         df["rating"] = (0.7 * df["is_recommended"]) + (0.3 * df["hours_normalized"])
 
         return df
@@ -137,6 +137,5 @@ if __name__ == "__main__":
     
     #test_user_id = 6956683 # user for 1000 user data
     test_user_id = 11895026
-    #test_user_id = 8075017 # user for 10000 user data
 
     recommender.print_recommendations(test_user_id, n=5)

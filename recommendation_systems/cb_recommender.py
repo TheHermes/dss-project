@@ -53,9 +53,8 @@ class ContentBasedRecommender:
         # Add title and tags together so we also may recommended titles of the same series, and if a game doesn't have tags it will recommend based on the name, usually then dlc and sequels prequels
         self.games_df['content'] = self.games_df["title"].apply(lambda x: x.replace(" ", "_")) + " " + self.games_df["tags_processed"]
 
-        # Compute TF-IDF features on tags
+        # Compute TF-IDF features
         tfidf = TfidfVectorizer(stop_words="english")
-        #self.tfidf_matrix = tfidf.fit_transform(self.games_df["tags_processed"])
         self.tfidf_matrix = tfidf.fit_transform(self.games_df["content"])
 
         # Index by game title
