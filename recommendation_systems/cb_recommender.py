@@ -1,5 +1,5 @@
 #
-#   Content base recommender
+#   Content base recommender AI has been used as a support in creation of this and assignments as help
 #
 import ast 
 import pandas as pd
@@ -58,7 +58,7 @@ class ContentBasedRecommender:
         #self.tfidf_matrix = tfidf.fit_transform(self.games_df["tags_processed"])
         self.tfidf_matrix = tfidf.fit_transform(self.games_df["content"])
 
-        # Index by game title (drop duplicates just in case)
+        # Index by game title
         self.game_indices = pd.Series(self.games_df.index, index=self.games_df["title"]).drop_duplicates()
 
     def recommend(self, game_title, num_recommendations=5):
@@ -92,12 +92,14 @@ if __name__ == "__main__":
     recommender = ContentBasedRecommender(game_data_path="data/games_merged.csv")
     recommender.fit()
 
-    # Example: change the title below to any that exists in your games.csv
+    # You can choose any game in the dataset!
+
     #game_title_to_test = "Dying Light 2 Stay Human"
     #game_title_to_test = "The Evil Within"
     #game_title_to_test = "Hearts of Iron IV"
     game_title_to_test = "Assassin's Creed® Origins"
     recommendations = recommender.recommend(game_title_to_test, num_recommendations=5)
+    
     if recommendations:
         print(f"\nRecommendations for '{game_title_to_test}':")
         for title, score in recommendations:

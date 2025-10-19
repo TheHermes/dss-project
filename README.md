@@ -13,7 +13,7 @@ Vi har 4 olika data filer:
 - users.csv, information om steam användare
 - recommendations.csv, rekommandtioner från användare på steam
 
-Vi borde kombinera games.csv med games_metadata.json för att lättare kunna ta tags och description. Vi behöver inte kombinera users.csv med recommendations.csv eftersom i det andra datan så finns det färdigt user_id och allt vi behöver men vi borde lite trimma på fil storleken. Recommendations.csv är nästan 2 gb stor eller 41 miljoner rader och kan säkert skapa en väldigt bra rekommendationssystem men vi måste beakta att vi jobbar med inte så bra hårdvara och vi vill komma fram till resultat snabbare.
+Vi borde kombinera games.csv med games_metadata.json för att lättare kunna ta tags och description. Vi behöver inte kombinera users.csv med recommendations.csv eftersom i recommendations finns det färdigt user_id och allt vi behöver men vi borde lite trimma på fil storleken. Recommendations.csv är nästan 2 gb stor eller 41 miljoner rader och kan säkert skapa en väldigt bra rekommendationssystem men vi måste beakta att vi jobbar med inte så bra hårdvara och vi vill komma fram till resultat snabbare.
 
 Users.csv har 14 miljoner användare/rader så vi kan bårt en hel del. Vi minskar mägnden till 1 000 och skapar bins för storlekar på 100.
 
@@ -22,6 +22,8 @@ Users.csv har 14 miljoner användare/rader så vi kan bårt en hel del. Vi minsk
 (hur många reviews per användare, den tar t.ex. 100 users med reviews mellan 26-35, så här får vi en diverse user base med olika mängder reviews, utan att behöva använda 2gb fil)
 
 (5, 15), (16, 25), (26, 35), (36, 45), (46, 55), (56, 65), (66, 75), (76, 85), (86, 95), (96, 120)
+
+Alla kod som används för att skapa mindre datafilerna finns i katalogen data_preparation, all kod där är gjord ganska långt med AI som stöd och har genererat mycket av koden där. Vi ville endast preparera datan effektivt och snabbt.
 
 Efter att vi trimmat/slagit ihop filerna har vi dom här filerna i data katalogen:
 

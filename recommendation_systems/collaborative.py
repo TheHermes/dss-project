@@ -1,11 +1,10 @@
 #
-#   Collaborative Recommender for Games (NMF-based)
+#   Collaborative Recommender for Games (NMF-based) AI has been used as a support in creation of this and assignments as help
 #
 
 import pandas as pd
 import numpy as np
 from sklearn.decomposition import NMF
-
 
 class CollaborativeRecommender:
     """
@@ -15,10 +14,6 @@ class CollaborativeRecommender:
     def __init__(self, games_path, recommendations_path):
         """
         Initialize recommender with paths to game metadata and user–game interactions.
-
-        Args:
-            games_path (str): Path to games_merged.csv
-            recommendations_path (str): Path to recommendations_1000.csv
         """
         self.games_df = pd.read_csv(games_path)
         self.recs_df = pd.read_csv(recommendations_path)
@@ -41,10 +36,10 @@ class CollaborativeRecommender:
         # Handle missing hours and normalize it
         df["hours"] = df["hours"].fillna(0)
 
-        # Normalize hours to a 0–1 range for fairness
+        # Normalize hours to a 0–1 range
         df["hours_normalized"] = df["hours"] / (df["hours"].max() + 1e-6)
 
-        # Weighted rating: more hours + positive rec = stronger signal
+        # Weighted rating: more hours + positive rec
         df["rating"] = (0.7 * df["is_recommended"]) + (0.3 * df["hours_normalized"])
 
         return df
@@ -136,16 +131,12 @@ if __name__ == "__main__":
         recommendations_path="data/recommendations_1000.csv"
     )
 
-    # Data with 10 000 users and ca 500 000 recommendations
-    """recommender = CollaborativeRecommender(
-        games_path="data/games_merged.csv",
-        recommendations_path="data/recommendations_10000.csv"
-    )"""
-
     recommender.fit()
 
-    # Test user (replace with an existing user_id)
+    # Test user, use whichever user you want to!
+    
     #test_user_id = 6956683 # user for 1000 user data
     test_user_id = 11895026
     #test_user_id = 8075017 # user for 10000 user data
+
     recommender.print_recommendations(test_user_id, n=5)
