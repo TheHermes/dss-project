@@ -272,5 +272,3 @@ Sammarbetsbaserade systemet skulle kunna förbättras genom att kombinera flera 
 Hybrid systemet är funktionellt och logiken är rätt. Förbättring kunde säkert göras i den ändå för att uppnå bättre resultat och effektivitet. Som nämnt ovan skulle det dels vara att utveckla på de två tidigare systemen. Men optimering av koden och ändringar som att t.ex. preparation av dataframes och bredare utgångspunkt än ett gillat spel kunde förbättra systemet. 
 
 För evalueringen så är det metriker vi mäter inte det bästa passande för vår data och rekommendationssystem. Precision blir alltid 0, coverage ganska lågt för att det är så stort dataset och novelty blir alltid ganska högt (kring 9). För att evaluerings programmet vore mera givande kunde man överväga att ha med andra metriker eller tänka om hur vi räknar/mäter dem vi har.
-
-
