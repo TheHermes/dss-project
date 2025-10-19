@@ -83,23 +83,29 @@ Fastän i bilden och när vi med kod utforskar finns det tomma tags också. Den 
 
 Det ända datasättet som kan utforskas bra visuellt är games.csv, users.csv har endast data i sig inget, intressant att visualisera.
 
-#### Antal spel utsläppta peer år
+#### 10 Vanligaste tags
 
-![Antal spel utsläppta peer år](/images/{BB019396-001B-47FC-BF4C-F42792F40584}.png)
+![alt text](/images/{CD71560D-E7A5-4650-B3DF-165E947B924E}.png)
 
 #### Spel per platform
 
 ![Spel per platform](/images/{07244AB0-3AF2-417A-97A6-0EE0C746FF04}.png)
 
+#### Antal spel utsläppta peer år
+
+![Antal spel utsläppta peer år](/images/{BB019396-001B-47FC-BF4C-F42792F40584}.png)
+
 #### Distribution av spel betyg
 
-![Distribution av spel betyg](/images/{91FF714C-DB90-43AE-AE12-6239243A4EED}.png)
+![Distribution av spel betyg](/images/{93FCED92-5BAA-44F2-BF8D-4CD099BA201E}.png)
 
 #### Hur många reviews finns det per spel
 
-![Distribution på recensioner](/images/{C2FB9F6A-1AFF-41B5-B9FE-6EA0D5E22EFF}.png)
+![Distribution av recensioner totalt på Steam](/images/{EF9B568C-9601-4166-A6EA-AAB66EBA30E9}.png)
 
-Det kommer antagligen att orsaka ett pupläritets bubble eller partiskhet i detta rekommendationssystem, eftersom mera populära spel har mera recenscioner.
+![Distribution av recensioner totalt i vårt data set](/images/{2DCA84C7-73F5-44AE-81FF-01D3A03B80A8}.png)
+
+Det kommer antagligen att orsaka ett pupläritets bubbla eller partiskhet i detta rekommendationssystem, eftersom mera populära spel har mera recenscioner.
 
 ## Innehålls baserad rekommendationssystem
 
